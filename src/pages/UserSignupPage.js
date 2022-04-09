@@ -1,6 +1,7 @@
 import React from "react";
-import { signUp } from '../api/apiCalls'
+import { signUp, changeLanguage } from '../api/apiCalls'
 import Input from '../components/input';
+import { withTranslation } from 'react-i18next';
 
 class UserSignupPage extends React.Component {
 
@@ -14,14 +15,23 @@ class UserSignupPage extends React.Component {
     }
 
     onChange = event => {
-
+        const { t } = this.props;
         const { name, value } = event.target;
-        const errors = { ...this.state.errors }
-        errors[name] = undefined
+        const errors = { ...this.state.errors };
+        errors[name] = undefined;
+        if (name === 'password' || name === 'passwordRepeat') {
+            if (name === 'password' && value !== this.state.passwordRepeat) {
+                errors.passwordRepeat = t('Password mismatch');
+            } else if (name === 'passwordRepeat' && value !== this.state.password) {
+                errors.passwordRepeat = t('Password mismatch');
+            } else {
+                errors.passwordRepeat = undefined;
+            }
+        }
         this.setState({
             [name]: value,
             errors
-        })
+        });
     }
 
     onClickSignup = async event => {
@@ -44,31 +54,41 @@ class UserSignupPage extends React.Component {
         this.setState({ pendingApiCall: false })
     };
 
+    onChangeLanguage = language => {
+        const { i18n } = this.props;
+        i18n.changeLanguage(language);
+        changeLanguage(language);
+    }
+
 
     render() {
+        const { t } = this.props;
         const { pendingApiCall, errors } = this.state;
-        const { username, displayName, password } = errors;
+        const { username, displayName, password, passwordRepeat } = errors;
         return (
             <div className="container">
                 <form>
-                    <h1 className="text-center">Sign Up</h1>
-                    <Input name="username" label="Username" error={username} onChange={this.onChange} />
-                    <Input name="displayName" label="Display Name" error={displayName} onChange={this.onChange} />
-                    <Input name="password" label="Password" error={password} onChange={this.onChange} type="password" />
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input className="form-control" name="password" onChange={this.onChange} type="password" />
-                    </div>
-                    <div className="form-group">
-                        <label>Password Repeat</label>
-                        <input className="form-control" name="passwordRepeat" onChange={this.onChange} type="password" />
-                    </div>
+                    <h1 className="text-center">{t('Sign Up')}</h1>
+                    <Input name="username" label={t('Username')} error={username} onChange={this.onChange} />
+                    <Input name="displayName" label={t('Display Name')} error={displayName} onChange={this.onChange} />
+                    <Input name="password" label={t('Password')} error={password} onChange={this.onChange} type="password" />
+                    <Input name="passwordRepeat" label={t('Password Repeat')} error={passwordRepeat} onChange={this.onChange} type="password" />
                     <div className="text-center">
                         <button
                             className="btn btn-primary mt-2"
                             onClick={this.onClickSignup}
-                            disabled={pendingApiCall}>
-                            {pendingApiCall && <span className="spinner-border spinner-border-sm"></span>} Sign Up
+                            disabled={pendingApiCall || passwordRepeat !== undefined}>
+                            {pendingApiCall && <span className="spinner-border spinner-border-sm"></span>} {t('Sign Up')}
+                        </button>
+                    </div>
+                    <div>
+                        <button
+                            className="btn btn-primary m-2"
+                            onClick={()=>this.onChangeLanguage('tr')}>TR
+                        </button>
+                        <button
+                            className="btn btn-primary m-2"
+                            onClick={()=>this.onChangeLanguage('en')}> EN
                         </button>
                     </div>
                 </form>
@@ -77,4 +97,4 @@ class UserSignupPage extends React.Component {
     };
 }
 
-export default UserSignupPage;
+export default withTranslation()(UserSignupPage);

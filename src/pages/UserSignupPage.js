@@ -58,6 +58,7 @@ class UserSignupPage extends React.Component {
         const { i18n } = this.props;
         i18n.changeLanguage(language);
         changeLanguage(language);
+
     }
 
 
@@ -81,17 +82,17 @@ class UserSignupPage extends React.Component {
                             {pendingApiCall && <span className="spinner-border spinner-border-sm"></span>} {t('Sign Up')}
                         </button>
                     </div>
-                    <div>
-                        <button
-                            className="btn btn-primary m-2"
-                            onClick={()=>this.onChangeLanguage('tr')}>TR
-                        </button>
-                        <button
-                            className="btn btn-primary m-2"
-                            onClick={()=>this.onChangeLanguage('en')}> EN
-                        </button>
-                    </div>
                 </form>
+                <div>
+                    <button
+                        className="btn btn-primary m-2"
+                        onClick={() => this.onChangeLanguage('tr')}>TR
+                    </button>
+                    <button
+                        className="btn btn-primary m-2"
+                        onClick={() => this.onChangeLanguage('en')}> EN
+                    </button>
+                </div>
             </div>
         )
     };

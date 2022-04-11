@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Input from '../components/input';
 import { login } from '../api/apiCalls';
-import axios from 'axios';
 import ButtonWithProgress from '../components/ButtonWithProgress';
 
 class LoginPage extends Component {
@@ -10,22 +9,9 @@ class LoginPage extends Component {
         username: null,
         password: null,
         error: null,
-        pendingApiCall: false
     }
 
-    componentDidMount() {
-        axios.interceptors.request.use((request) => {
-            this.setState({ pendingApiCall: true })
-            return request;
-        });
-        axios.interceptors.response.use((response) => {
-            this.setState({ pendingApiCall: false })
-            return response;
-        }, error => {
-            this.setState({ pendingApiCall: false })
-            throw error;
-        })
-    }
+
 
     onChange = event => {
         const { name, value } = event.target;
@@ -55,7 +41,8 @@ class LoginPage extends Component {
     }
 
     render() {
-        const { username, password, error, pendingApiCall } = this.state;
+        const { pendingApiCall } = this.props
+        const { username, password, error } = this.state;
         const buttonEnabled = username && password;
         return (
             <div className='container'>

@@ -6,11 +6,14 @@ import UserSignupPage from './pages/UserSignupPage';
 import LoginPage from './pages/LoginPage';
 import reportWebVitals from './reportWebVitals';
 import './i18n';
+import ApiProgress from './shared/ApiProgress'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <LoginPage />
-  </React.StrictMode>,
+  <div>
+    <ApiProgress>
+      <LoginPage />
+    </ApiProgress>
+  </div>,
   document.getElementById('root')
 );
 
@@ -18,4 +21,3 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
- 

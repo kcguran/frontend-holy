@@ -3,6 +3,7 @@ import { signUp, changeLanguage } from '../api/apiCalls'
 import Input from '../components/input';
 import { withTranslation } from 'react-i18next';
 import ButtonWithProgress from "../components/ButtonWithProgress";
+import { withApiProgress } from "../shared/ApiProgress";
 
 class UserSignupPage extends React.Component {
 
@@ -52,12 +53,6 @@ class UserSignupPage extends React.Component {
         }
     };
 
-    onChangeLanguage = language => {
-        const { i18n } = this.props;
-        i18n.changeLanguage(language);
-        changeLanguage(language);
-
-    }
 
 
     render() {
@@ -94,6 +89,10 @@ class UserSignupPage extends React.Component {
             </div>
         )
     };
+    
 }
 
-export default withTranslation()(UserSignupPage);
+const UserSignupPageWithTranslation = withTranslation()(UserSignupPage);
+const UserSignupPageWithApiProgress = withApiProgress(UserSignupPageWithTranslation,'/api/1.0/users');
+
+export default UserSignupPageWithApiProgress;
